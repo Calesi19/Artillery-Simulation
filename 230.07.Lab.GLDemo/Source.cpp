@@ -16,7 +16,8 @@
 #define _USE_MATH_DEFINES   // For defining Pi
 #include <cmath> // for squaring certain values
 #include <cassert>      // for ASSERT
-#include "position.h"   // for POSITION
+#include <iostream>
+//#include "position.h"   // for POSITION
 using namespace std;
 
 double dragForce(double c, double p, double v, double a) {
@@ -42,7 +43,7 @@ double circleArea(double r) {
 	r = radius of a circle
 	*/
 
-	double a = 3.14 * pow(r, 2);
+	double a = M_PI * pow(r, 2);
 	return a;
 
 }
@@ -146,12 +147,8 @@ double getAngleFromComponents(double speedX, double speedY)
 	return atan(speedX * speedY);
 }
 
-double getSpeedFromComponents(float speedX, float speedY)
-{
-	float speed = sqrt(speedX * speedX + speedY * speedY);
-	return speed;
-}
 
+/*
 double getLinearInterpolation(Position position1, Position position2, float yValue)
 {
 	float component1 = position2.getMetersY() - position1.getMetersY();
@@ -162,6 +159,8 @@ double getLinearInterpolation(Position position1, Position position2, float yVal
 	float solution = component3 / (component1 / component2) + position1.getMetersX();
 	return solution;
 }
+*/
+
 
 double computeAcceleration(double f, double m) {
 	/**************************************************
@@ -179,8 +178,46 @@ double computeAcceleration(double f, double m) {
 }
 
 
-double getDragCoefficient(double speed) {
-	double machSpeed = speed / 343;
+
+double getSpeedOfSound(double altitude) {
+
+	if (altitude >= 40000) return 324;
+
+	else if (altitude >= 30000) return 305;
+
+	else if (altitude >= 25000) return 295;
+
+	else if (altitude >= 20000) return 295;
+
+	else if (altitude >= 15000) return 295;
+
+	else if (altitude >= 10000) return 299;
+
+	else if (altitude >= 9000) return 303;
+
+	else if (altitude >= 8000) return 308;
+
+	else if (altitude >= 7000) return 312;
+
+	else if (altitude >= 6000) return 316;
+
+	else if (altitude >= 5000) return 320;
+
+	else if (altitude >= 4000) return 324;
+
+	else if (altitude >= 3000) return 328;
+
+	else if (altitude >= 2000) return 332;
+
+	else if (altitude >= 1000) return 336;
+
+	else return 340;
+
+}
+
+
+double getDragCoefficient(double speed, double altitude) {
+	double machSpeed = speed / getSpeedOfSound(altitude);
 	double dragCoefficient;
 	if (machSpeed >= 5) dragCoefficient = .2656;
 	else if (machSpeed >= 2.890) dragCoefficient = .2306;
@@ -203,17 +240,82 @@ double getDragCoefficient(double speed) {
 }
 
 double getAirDensity(double altitude) {
-	double lapseRate = 0.00650; // K/m
-	double standardTemp = 288.16; // K
-	double standardPressure = 101.325; // KPa
-	double gasConstant = 287; // J/kgK
-	double gravAcceleration = 9.81; // m/s squared
 
-	double airDensity = 0.01 * ((pow((1 - ((lapseRate * altitude) / standardTemp)), (gravAcceleration / (gasConstant * lapseRate))) * (standardTemp / (standardTemp - (lapseRate * altitude)))) * standardPressure);
+	if (altitude >= 80000) return 0.0000185;
 
-	return airDensity;
+	else if (altitude >= 70000) return 0.0000828;
+
+	else if (altitude >= 60000) return 0.0003097;
+
+	else if (altitude >= 50000) return 0.0010270;
+
+	else if (altitude >= 40000) return 0.0039960;
+
+	else if (altitude >= 30000) return 0.0184100;
+
+	else if (altitude >= 25000) return 0.0400800;
+
+	else if (altitude >= 20000) return 0.0889100;
+
+	else if (altitude >= 15000) return 0.1948000;
+
+	else if (altitude >= 10000) return 0.4135000;
+
+	else if (altitude >= 9000) return 0.4671000;
+
+	else if (altitude >= 8000) return 0.5258000;
+
+	else if (altitude >= 7000) return 0.5900000;
+
+	else if (altitude >= 6000) return 0.6601000;
+
+	else if (altitude >= 5000) return 0.7364000;
+
+	else if (altitude >= 4000) return 0.8194000;
+
+	else if (altitude >= 3000) return 0.9093000;
+
+	else if (altitude >= 2000) return 1.0070000;
+
+	else if (altitude >= 1000) return 1.1120000;
+
+	else return 1.2250000;
 }
 
+
+
+
+
+double getGravity(double altitude) {
+	if (altitude < 1000)
+		return 9.807;
+	else if (altitude < 2000)
+		return 9.804;
+	else if (altitude < 3000)
+		return 9.801;
+	else if (altitude < 4000)
+		return 9.797;
+	else if (altitude < 5000)
+		return 9.794;
+	else if (altitude < 6000)
+		return 9.791;
+	else if (altitude < 7000)
+		return 9.788;
+	else if (altitude < 8000)
+		return 9.785;
+	else if (altitude < 9000)
+		return 9.782;
+	else if (altitude < 10000)
+		return 9.779;
+	else if (altitude < 15000)
+		return 9.776;
+	else if (altitude < 20000)
+		return 9.761;
+	else if (altitude < 25000)
+		return 9.745;
+	else
+		return 9.730;
+}
 
 
 
@@ -238,75 +340,63 @@ double computeDistance(double s, double v, double a, double t) {
 
 int main() {
 
-	double angle = 10;
-	double distance;
+	double angle;
+	double distance = 0;
 	double time = 0;
 	double t = .01;
-	double gravity = -9.8; //m/s squared
-	double surfaceArea = circleArea(154.89 / 1000);
 
-	double speed = 827;   //m/s
-	double weight = 46.7; //kg
-	double diameter = 154.89; //mm
-	Position position = Position(0, 0);
+	double speed = 827; //   #m / s
+	double weight = 46.7; // #kg
+	double diameter = 154.89; //#mm
+	double surfaceArea = circleArea((diameter / 2)) / 1000;
 
-	//cout << "What is the angle of the howitzer where 0 is up ? " << endl;
-	//cin >> angle;
+	cout << "What is the angle of the howitzer where 0 is up ? " << endl;
+	cin >> angle;
 	double radians = radiansFromDegrees(angle);
-
-	while (time < 10) {
-		position.addMetersX(computeDistance(position.getMetersX(), computeHorizontalComponent(radians, speed), dragForce(getDragCoefficient(speed), getAirDensity(position.getMetersY()), speed, surfaceArea), t));
-		position.addMetersY(computeDistance(position.getMetersY(), computeVerticalComponent(radians, speed), dragForce(getDragCoefficient(speed) + gravity, getAirDensity(position.getMetersY()), speed, surfaceArea), t));
-		cout << "X Position: " << position.getMetersX() << endl;
-		cout << "Y Position: " << position.getMetersY() << endl;
-
-		speed -= dragForce(getDragCoefficient(speed), getAirDensity(position.getMetersY()), speed, surfaceArea);
-		time += t;
-	}
-
-	/*
-	double y = 0;
+	
+	double dx;
+	double dy;
 	double x = 0;
-	double dx = computeHorizontalComponent(radians, speed);
-	double dy = computeHorizontalComponent(radians, speed);
-	double surfaceArea = circleArea(154.89 * 1000);
+	double y = 0;
+	double ddx;
+	double ddy;
+	double Thrust;
+	double xThrust;
+	double yThrust;
 
-	double ddxThrust = computeHorizontalComponent(radians, dragForce(getDragCoefficient(dx), getAirDensity(y), dx, surfaceArea));
-	double ddyThrust = computeVerticalComponent(radians, dragForce(getDragCoefficient(dy), getAirDensity(y), dy, surfaceArea));
+	
+	while (y >= 0){
+		
+		//Find forces affecting horizontaland vertical values
+		Thrust = computeHorizontalComponent(radians, dragForce(getDragCoefficient(speed, y), getAirDensity(y), speed, surfaceArea));
 
 
-	// Vertical acceleration due to thrust
-	double ddx = computeAcceleration(ddxThrust, weight);
-	// Total horizontal acceleration
-	double ddy = computeAcceleration(ddyThrust, weight) + gravity;
-	// Total vertical acceleration
+		//Find the acceleration of the horizontal and vertical values
 
-	//while (position.getMetersY() >= 0) {
-	while (time < 10){
 		dx = computeHorizontalComponent(radians, speed);
 		dy = computeHorizontalComponent(radians, speed);
 
-		x += dx;
-		y += dy;
+		xThrust = computeHorizontalComponent(radians, Thrust);
+		yThrust = computeVerticalComponent(radians, Thrust);
 
-		ddx = dragForce(getDragCoefficient(dx), getAirDensity(y), dx, surfaceArea);
-		ddy = dragForce(getDragCoefficient(dy), getAirDensity(y), dx, surfaceArea) + gravity;
+		ddx = computeAcceleration(xThrust, weight);
+		ddy = computeAcceleration(yThrust, weight) + getGravity(y);
 
-		speed = getSpeedFromComponents(ddx, ddy);
+		dx -= ddx;
+		dy -= ddy;
 
-		cout << y;
+		//Find the distance traveled in t time
+		x += computeDistance(x, dx, ddx, t);
+		y += computeDistance(y, dy, ddy, t);
+
+		speed = computeTotalComponent(dx, dy);
+
 		time += t;
 	}
 
-	*/
-
-	distance = position.getMetersX();
-
+	distance = x;
 
 	cout << "Distance : " << distance << "m     Hang Time : " << time << "s" << endl;
-
-
-
 
 
 	return 0;

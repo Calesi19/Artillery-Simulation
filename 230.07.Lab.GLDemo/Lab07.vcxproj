@@ -139,13 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ground.cpp" />
-    <ClCompile Include="Lab07.cpp" />
-    <ClCompile Include="position.cpp" />
     <ClCompile Include="Source.cpp" />
-    <ClCompile Include="test.cpp" />
-    <ClCompile Include="uiDraw.cpp" />
-    <ClCompile Include="uiInteract.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ground.h" />

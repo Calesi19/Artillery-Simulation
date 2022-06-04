@@ -1,8 +1,2 @@
-﻿  ground.cpp
-  Lab07.cpp
-  position.cpp
-  test.cpp
-  uiDraw.cpp
-  uiInteract.cpp
-  Generating Code...
-  Lab07.vcxproj -> G:\My Drive\Code\Artillery\230.07.Lab.GLDemo\x64\Debug\Lab07.exe
+﻿  Source.cpp
+  Lab07.vcxproj -> C:\Users\Carlos Lespin\Google Drive\Code\Artillery2\Artillery\230.07.Lab.GLDemo\x64\Debug\Lab07.exe
