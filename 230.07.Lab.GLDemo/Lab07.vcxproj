@@ -139,9 +139,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Artillery\230.07.Lab.GLDemo\howitzer.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Artillery\230.07.Lab.GLDemo\howitzer.h" />
+    <ClInclude Include="..\..\Artillery\230.07.Lab.GLDemo\testHowitzer.h" />
+    <ClInclude Include="..\..\Artillery\230.07.Lab.GLDemo\testProjectile.h" />
     <ClInclude Include="ground.h" />
     <ClInclude Include="position.h" />
     <ClInclude Include="test.h" />

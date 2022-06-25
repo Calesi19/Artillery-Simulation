@@ -36,6 +36,8 @@ public:
       
       addPixels();
       addMeters();
+
+      testComputeDistance();
    }
    
 private:
@@ -143,5 +145,19 @@ private:
       assert(pos.x == 4000.0);
       assert(pos.y == 7000.0);
    }  // teardown
+
+   void testComputeDistance() {
+       // SETUP
+       Position pos1;
+       pos1.x = 0.0;
+       pos1.y = 0.0;
+       Position pos2;
+       pos2.x = 4.0;
+       pos2.y = 3.0;
+       // EXERCISE
+       double distance = computeDistance(pos1, pos2);
+       // VERIFY
+       assert(distance == 5);
+   }   // TEARDOWN
 
 };
