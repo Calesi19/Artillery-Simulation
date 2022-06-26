@@ -2,86 +2,72 @@
 
 
 #include "position.h"
+#include "projectile.h"
 
 
 
-class Projectile {
 
-public:
+bool Projectile::checkIsMoving() {
+	return this->isMoving;
+}
 
+void Projectile::setAngle(double angle) {
+	this->angle = angle;
+}
 
-	double mass = 46.7;
-	Position position = Position(0, 0);
-	double diameter = 154;
-	double velocity = 827;
-	double angle = 0;
-	bool isMoving = false;
-	double hangTime = 0;
+double Projectile::getAngle() {
+	return this->angle;
+}
 
+double Projectile::getXPosition() {
+	return this->position.getMetersX();
+}
 
+double Projectile::getYPosition() {
+	return this->position.getMetersY();
+}
 
-	bool checkIsMoving() {
-		return this->isMoving;
+void Projectile::setXPosition(double value) {
+	this->position.setMetersX(value);
+}
+
+void Projectile::setYPosition(double value) {
+	this->position.setMetersY(value);
+}
+
+void Projectile::setVelocity(double velocity) {
+	this->velocity = velocity;
+}
+
+double Projectile::getVelocity() {
+	return this->velocity;
+}
+
+double Projectile::getDiameter() {
+	return this->diameter;
+}
+
+double Projectile::getMass() {
+	return this->mass;
+}
+
+void Projectile::toggleIsMoving() {
+	if (this->isMoving) {
+		this->isMoving = false;
 	}
-
-	void setAngle(double angle) {
-		this->angle = angle;
+	else {
+		this->isMoving = true;
 	}
+}
 
-	double getAngle() {
-		return this->angle;
-	}
+void Projectile::updateHangTime(double dt) {
+	this->hangTime += dt;
+}
 
-	double getXPosition() {
-		return this->position.getMetersX();
-	}
+double Projectile::getHangTime() {
+	return this->hangTime;
+}
 
-	double getYPosition() {
-		return this->position.getMetersY();
-	}
-
-	void setXPosition(double value) {
-		this->position.setMetersX(value);
-	}
-
-	void setYPosition(double value) {
-		this->position.setMetersY(value);
-	}
-
-	void setVelocity(double velocity) {
-		this->velocity = velocity;
-	}
-
-	double getVelocity() {
-		return this->velocity;
-	}
-
-	double getDiameter() {
-		return this->diameter;
-	}
-
-	double getMass() {
-		return this->mass;
-	}
-
-	void toggleIsMoving() {
-		if (this->isMoving) {
-			this->isMoving = false;
-		}
-		else {
-			this->isMoving = true;
-		}
-	}
-
-	void updateHangTime(double dt) {
-		this->hangTime += dt;
-	}
-
-	double getHangTime() {
-		return this->hangTime;
-	}
-
-	double getSurfaceArea() {
-		return 3.14 * pow((this->getDiameter() / 2), 2);
-	}
-};
+double Projectile::getSurfaceArea() {
+	return 3.14 * pow((this->getDiameter() / 2), 2);
+}

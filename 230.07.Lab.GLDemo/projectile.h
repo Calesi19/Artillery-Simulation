@@ -2,20 +2,22 @@
 #include "position.h"
 
 
+class TestProjectile;
+
 class Projectile {
 	
 
 
 public:
+	friend TestProjectile;
 
-	double mass;
-	Position position;
-	double diameter;
-	double velocity;
-	double angle;
-	bool isMoving;
-	double hangTime;
-
+	double mass = 46.7;
+	Position position = Position(0, 0);
+	double diameter = 154;
+	double velocity = 827;
+	double angle = 0;
+	bool isMoving = false;
+	double hangTime = 0;
 
 	bool checkIsMoving();
 

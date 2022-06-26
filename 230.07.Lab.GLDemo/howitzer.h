@@ -8,11 +8,13 @@
  ************************************************************************/
 
 #pragma once
+class TestHowitzer;
 
 class Howitzer {
 
 
 public:
+	friend TestHowitzer;
 
 	bool checkCanFire();
 
@@ -20,15 +22,17 @@ public:
 
 	void fireProjectile();
 
+	//Projectile projectile();
+
 	// Getters
-	float getAngle()           const { return angle; }
+	double getAngle()           const { return angle; }
 
-	float getXPosition()       const { return point.getMetersX(); }
+	double getXPosition()       const { return point.getMetersX(); }
 
-	float getYPosition()       const { return point.getMetersY(); }
+	double getYPosition()       const { return point.getMetersY(); }
 
 	// Setters
-	void setangle(double newAngle) { angle = newAngle; }
+	void setAngle(double newAngle) { angle = newAngle; }
 
 	void setXPosition(double xMeters) { point.setMetersX(xMeters); }
 
@@ -36,7 +40,7 @@ public:
 
 private:
 	bool canFire;
-	float angle;
+	double angle;
 	Position point;
 
 };

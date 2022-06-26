@@ -55,7 +55,7 @@ private:
 
 		Projectile test2;
 		test2.isMoving = false;
-		assert(test2.checkIsMoving());
+		assert(test2.checkIsMoving() == false);
 	
 
 	};
@@ -283,12 +283,12 @@ private:
 
 		Projectile test1;
 		test1.diameter = -45;
-		assert(test1.getSurfaceArea() == -45);
+		assert(test1.getSurfaceArea() == 1589.625);
 		
 
 		Projectile test2;
 		test2.diameter = 45;
-		assert(test2.getSurfaceArea() == 45);
+		assert(test2.getSurfaceArea() == 1589.625);
 		
 	};
 };

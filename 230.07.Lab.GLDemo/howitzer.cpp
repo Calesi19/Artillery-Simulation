@@ -29,6 +29,6 @@ void Howitzer::toggleCanFire()
 	if (this->canFire == true)
 		this->canFire = false;
 	else
-		this-> canFire = true;
-	
+		this->canFire = true;
+
 }

@@ -1,19 +1,18 @@
 /***********************************************************************
  * Header File:
- *    Test Howitzer : Test the Projectile class
+ *    Test Howitzer : Test the Howitzer class
  * Author:
  *    Carlos Lespin and Braxton Meyer
  * Summary:
- *    All the unit tests for Projectile
+ *    All the unit tests for Howitzer
  ************************************************************************/
 
 #pragma once
 
 #include <iostream>
 #include <assert.h>
-#include <projectile.h>
-#include <trajectory.h>
-#include <point.h>
+#include "projectile.h"
+
 using namespace std;
 
 /*******************************
@@ -25,24 +24,22 @@ class testProjectile {
 public:
 	void run() {
 
-		this.test_inMoving();
-		this.test_setAngle();
-		this.test_getAngle();
-		this.test_getXPosition();
-		this.test_setXPosition();
-		this.test_getYPosition();
-		this.test_setYPosition();
-		this.test_getVelocity();
-		this.test_setVelocity();
-		this.test_getDiameter();
-		this.test_getMass();
-		this.test_toggleIsMoving();
-		this.test_updateHangTime();
-		this.test_getHangTime();
-		this.test_getSurfaceArea();
-		this.test_updateTrajectory();
-		this.test_getTrajectoryX();
-		this.test_getTrajectoryY();
+		test_isMoving();
+		test_setAngle();
+		test_getAngle();
+		test_getXPosition();
+		test_setXPosition();
+		test_getYPosition();
+		test_setYPosition();
+		test_getVelocity();
+		test_setVelocity();
+		test_getDiameter();
+		test_getMass();
+		test_toggleIsMoving();
+		test_updateHangTime();
+		test_getHangTime();
+		test_getSurfaceArea();
+
 	}
 
 
@@ -50,288 +47,248 @@ private:
 
 	void test_isMoving() {
 
-		Projectile test = new Projectile();
-		test.isMoving == true;
-		assert(test.isMoving() == true);
-		delete test;
+		Projectile test1;
+		test1.isMoving = true;
+		assert(test1.checkIsMoving());
 
-		Projectile test = new Projectile();
-		test.isMoving == false;
-		assert(test.isMoving() == false);
-		delete test;
+
+
+		Projectile test2;
+		test2.isMoving = false;
+		assert(test2.checkIsMoving());
+
 
 	};
 
 	void test_setAngle() {
 
-		Projectile test = new Projectile();
-		test.angle = 0;
-		test.setAngle(50);
-		assert(test.angle == 50);
-		delete test;
+		Projectile test1;
+		test1.angle = 0;
+		test1.setAngle(50);
+		assert(test1.angle == 50);
 
 
-		Projectile test = new Projectile();
-		test.angle = 0;
-		test.setAngle(-50);
-		assert(test.angle == -50);
-		delete test;
 
-	
+		Projectile test2;
+		test2.angle = 0;
+		test2.setAngle(-50);
+		assert(test2.angle == -50);
+
+
 	};
 
 	void test_getAngle() {
-		
-		Projectile test = new Projectile();
-		test.angle = 0;
-		assert(test.getAngle == 0);
-		delete test;
 
-		Projectile test = new Projectile();
-		test.angle = 10;
-		assert(test.getAngle ==10);
-		delete test;
+		Projectile test1;
+		test1.angle = 0;
+		assert(test1.getAngle() == 0);
 
-		Projectile test = new Projectile();
-		test.angle = -10;
-		assert(test.getAngle == -10);
-		delete test;
+
+		Projectile test2;
+		test2.angle = 10;
+		assert(test2.getAngle() == 10);
+
+
+		Projectile test3;
+		test3.angle = -10;
+		assert(test3.getAngle() == -10);
+
 
 	};
 
 	void test_getXPosition() {
-		
-		Projectile test = new Projectile();
-		test.position.x = 0;
-		assert(test.getXPosition() == 0);
-		delete test;
 
-		Projectile test = new Projectile();
-		test.position.x = 330;
-		assert(test.getXPosition() == 330);
-		delete test;
+		Projectile test1;
+		test1.position.setMetersX(0);
+		assert(test1.getXPosition() == 0);
 
-		Projectile test = new Projectile();
-		test.position.x = -330;
-		assert(test.getXPosition() == -330);
-		delete test;
+
+		Projectile test2;
+		test2.position.setMetersX(330);
+		assert(test2.getXPosition() == 330);
+
+
+		Projectile test3;
+		test3.position.setMetersX(-330);
+		assert(test3.getXPosition() == -330);
+
 
 	};
 
 	void test_setXPosition() {
 
-		Projectile test = new Projectile();
-		test.position.x = 0;
-		test.setXPosition(50);
-		assert(test.position.x == 50);
-		delete test;
+		Projectile test1;
+		test1.position.setMetersX(0);
+		test1.setXPosition(50);
+		assert(test1.position.getMetersX() == 50);
 
-		Projectile test = new Projectile();
-		test.position.x = 0;
-		test.setXPosition(-50);
-		assert(test.position.x == -50);
-		delete test;
-	
+
+		Projectile test2;
+		test2.position.setMetersX(0);
+		test2.setXPosition(-50);
+		assert(test2.position.getMetersX() == -50);
+
+
 	};
 
 	void test_getYPosition() {
 
-		Projectile test = new Projectile();
-		test.position.y = 0;
-		assert(test.getYPosition() == 0);
-		delete test;
+		Projectile test1;
+		test1.position.setMetersY(0);
+		assert(test1.getYPosition() == 0);
 
-		Projectile test = new Projectile();
-		test.position.y = 330;
-		assert(test.getYPosition() == 330);
-		delete test;
 
-		Projectile test = new Projectile();
-		test.position.y = -330;
-		assert(test.getYPosition() == -330);
-		delete test;
+		Projectile test2;
+		test2.position.setMetersY(330);
+		assert(test2.getYPosition() == 330);
+
+
+		Projectile test3;
+		test3.position.setMetersY(-330);
+		assert(test3.getYPosition() == -330);
+
 
 	};
 
 	void test_setYPosition() {
-		
-		Projectile test = new Projectile();
-		test.position.y = 0;
-		test.setYPosition(50);
-		assert(test.position.Y == 50);
-		delete test;
 
-		Projectile test = new Projectile();
-		test.position.y = 0;
-		test.setYPosition(-50);
-		assert(test.position.y == -50);
-		delete test;
+		Projectile test1;
+		test1.position.setMetersY(0);
+		test1.setYPosition(50);
+		assert(test1.position.getMetersY() == 50);
+
+
+		Projectile test2;
+		test2.position.setMetersY(0);
+		test2.setYPosition(-50);
+		assert(test2.position.getMetersY() == -50);
+
 
 	};
 
 	void test_getVelocity() {
-	
-		Projectile test = new Projectile();
-		test.velocity = 330;
-		assert(test.getVelocity() == 330);
-		delete test;
 
-		Projectile test = new Projectile();
-		test.velocity = -330;
-		assert(test.getVelocity() == -330);
-		delete test;
+		Projectile test1;
+		test1.velocity = 330;
+		assert(test1.getVelocity() == 330);
 
+
+		Projectile test2;
+		test2.velocity = -330;
+		assert(test2.getVelocity() == -330);
 
 	};
 
 	void test_setVelocity() {
-		
-		Projectile test = new Projectile();
-		test.velocity = 0;
-		test.setVelocity(50);
-		assert(test.velocity == 50);
-		delete test;
 
-		Projectile test = new Projectile();
-		test.velocity = 0;
-		test.setVelocity(-50);
-		assert(test.velocity == -50);
-		delete test;
+		Projectile test1;
+		test1.velocity = 0;
+		test1.setVelocity(50);
+		assert(test1.velocity == 50);
+
+
+		Projectile test2;
+		test2.velocity = 0;
+		test2.setVelocity(-50);
+		assert(test2.velocity == -50);
+
 
 	};
 
 
 	void test_getDiameter() {
-		
-		Projectile test = new Projectile();
-		test.diameter = 330;
-		assert(test.getDiameter() == 330);
-		delete test;
+
+		Projectile test1;
+		test1.diameter = 330;
+		assert(test1.getDiameter() == 330);
+
 
 	};
 
 	void test_getMass() {
-		
-		Projectile test = new Projectile();
-		test.mass = 4040;
-		assert(test.getMass() == 4040);
-		delete test;
 
-		Projectile test = new Projectile();
-		test.mass = -4040;
-		assert(test.getMass() == -4040);
-		delete test;
+		Projectile test1;
+		test1.mass = 4040;
+		assert(test1.getMass() == 4040);
+
+
+		Projectile test2;
+		test2.mass = -4040;
+		assert(test2.getMass() == -4040);
+
 
 	};
 
 
 	void test_toggleIsMoving() {
 
-		Projectile test = new Projectile();
-		test.isMoving = true;
-		test.toggleIsMoving()
-		assert(test.IsMoving() == false);
-		delete test;
+		Projectile test1;
+		test1.isMoving = true;
+		test1.toggleIsMoving();
+		assert(test1.isMoving == false);
 
-		Projectile test = new Projectile();
-		test.isMoving = false;
-		test.toggleIsMoving()
-		assert(test.IsMoving() == true);
-		delete test;
+
+		Projectile test2;
+		test2.isMoving = false;
+		test2.toggleIsMoving();
+		assert(test2.isMoving == true);
+
 
 	};
 
 	void test_updateHangTime() {
-		
-		Projectile test = new Projectile();
-		test.hangTime = 0;
-		test.updateHangTime(5);
-		assert(test.hangTime == 5);
-		delete test;
 
-		Projectile test = new Projectile();
-		test.hangTime = 10;
-		test.updateHangTime(5);
-		assert(test.hangTime == 15);
-		delete test;
+		Projectile test1;
+		test1.hangTime = 0;
+		test1.updateHangTime(5);
+		assert(test1.hangTime == 5);
 
-		Projectile test = new Projectile();
-		test.hangTime = -5;
-		test.updateHangTime(5);
-		assert(test.hangTime == 0);
-		delete test;
+
+		Projectile test2;
+		test2.hangTime = 10;
+		test2.updateHangTime(5);
+		assert(test2.hangTime == 15);
+
+
+		Projectile test3;
+		test3.hangTime = -5;
+		test3.updateHangTime(5);
+		assert(test3.hangTime == 0);
+
 
 
 	};
 
 	void test_getHangTime() {
-		
-		Projectile test = new Projectile();
-		test.hangTime = 0;
-		assert(test.getHangTime() == 0);
-		delete test;
 
-		Projectile test = new Projectile();
-		test.hangTime = 45;
-		assert(test.getHangTime() ==45);
-		delete test;
+		Projectile test1;
+		test1.hangTime = 0;
+		assert(test1.getHangTime() == 0);
 
-		Projectile test = new Projectile();
-		test.hangTime = -45;
-		assert(test.getHangTime() == -45);
-		delete test;
+
+		Projectile test2;
+		test2.hangTime = 45;
+		assert(test2.getHangTime() == 45);
+
+
+		Projectile test3;
+		test3.hangTime = -45;
+		assert(test3.getHangTime() == -45);
+
 
 
 	};
 
 	void test_getSurfaceArea() {
-		
-		Projectile test = new Projectile();
-		test.surfaceArea = -45;
-		assert(test.getSurfaceArea() == -45);
-		delete test;
 
-		Projectile test = new Projectile();
-		test.surfaceArea = 45;
-		assert(test.getSurfaceArea() == 45);
-		delete test;
+		Projectile test1;
+		test1.diameter = -45;
+		assert(test1.getSurfaceArea() == -45);
 
+
+		Projectile test2;
+		test2.diameter = 45;
+		assert(test2.getSurfaceArea() == 45);
 
 	};
-
-	void test_updateTrajectory() {
-		
-		Projectile test = new Projectile();
-		test.trajectory.x = [1,2,3];
-		test.trajectory.y = [5,6,7];
-		test.position.x = 4;
-		test.position.y = 8;
-
-		test.updateTrajectory();
- 
-		assert(test.trajectory.x == [1,2,3,4]);
-		assert(test.trajectory.y == [5,6,7,8]);
-
-		delete test;
-
-	};
-
-	void test_getTrajectoryX() {
-		
-		Projectile test = new Projectile();
-		test.trajectory.x = [1, 2, 3, 4];
-		assert(test.getTrajectoryX == [1, 2, 3, 4]);
-		delete test;
-
-	};
-
-	void test_getTrajectoryY() {
-		
-		Projectile test = new Projectile();
-		test.trajectory.y = [1, 2, 3, 4];
-		assert(test.getTrajectoryY == [1, 2, 3, 4]);
-		delete test;
-
-	};
-
 };
