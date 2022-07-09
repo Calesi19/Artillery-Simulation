@@ -7,6 +7,9 @@
  *    Everything we need to know about the Howitzer
  ************************************************************************/
 
+
+#include "position.h"
+
 #pragma once
 class TestHowitzer;
 
@@ -15,6 +18,12 @@ class Howitzer {
 
 public:
 	friend TestHowitzer;
+
+	Howitzer() {
+		point.setPixelsX(700 / 2.0);
+		point.setPixelsY(500);
+	}
+
 
 	bool checkCanFire();
 
@@ -42,5 +51,10 @@ private:
 	bool canFire;
 	double angle;
 	Position point;
+
+
+	
+	
+
 
 };

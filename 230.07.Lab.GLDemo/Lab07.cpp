@@ -17,6 +17,8 @@
 #include "ground.h"     // for GROUND
 #include "position.h"   // for POSITION
 #include "test.h"
+#include "howitzer.h"
+#include "Projectile.h"
 using namespace std;
 
 /*************************************************************************
@@ -44,6 +46,15 @@ public:
     Position  ptUpperRight;        // size of the screen
     double angle;                  // angle of the howitzer 
     double time;                   // amount of time since the last firing
+
+
+    Howitzer howitzer;
+    Projectile projectile;
+
+
+
+
+
 };
 
 /*************************************

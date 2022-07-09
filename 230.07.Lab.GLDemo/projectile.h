@@ -1,6 +1,8 @@
 #pragma once
 #include "position.h"
 #include "equations.cpp"
+#include <vector>
+#include <iostream>
 
 class TestProjectile;
 
@@ -14,12 +16,24 @@ public:
 	double mass = 46.7;
 	Position position = Position(0, 0);
 	double diameter = 154.89;
-	double xVelocity;
-	double yVelocity;
-	double angle = 0;
+
+	double iVelocity = 827;
+
+	vector<double> Velocity;
+	vector<double> xVelocity;
+	vector<double> yVelocity;
+
+	double angle;
+	double radians;
+
+
 	bool isMoving = false;
 	double hangTime = 0;
+
 	double surfaceArea = circleArea((diameter / 2)) / 1000000;
+
+	double Ax;
+	double Ay;
 	
 
 	bool checkIsMoving();
