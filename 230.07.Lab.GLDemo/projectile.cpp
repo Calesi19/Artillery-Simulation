@@ -6,6 +6,18 @@
 
 
 
+double Projectile::circleArea(double r) {
+
+	/*
+	a = area of a circle (m2)
+	r = radius of a circle
+	*/
+
+	double a = 3.14 * pow(r, 2);
+	return a;
+
+}
+
 
 bool Projectile::checkIsMoving() {
 	return this->isMoving;
@@ -35,12 +47,44 @@ void Projectile::setYPosition(double value) {
 	this->position.setMetersY(value);
 }
 
-void Projectile::setVelocity(double velocity) {
-	this->velocity = velocity;
+void Projectile::setVelocity(double newVelocity) {
+	this->velocity.push_back(newVelocity);
 }
 
-double Projectile::getVelocity() {
-	return this->velocity;
+void Projectile::setXVelocity(double newVelocity) {
+	this->xVelocity.push_back(newVelocity);
+}
+
+void Projectile::setYVelocity(double newVelocity) {
+	this->yVelocity.push_back(newVelocity);
+}
+
+vector<double> Projectile::getVelocity() {
+	return velocity;
+}
+
+vector<double> Projectile::getXVelocity() {
+	return xVelocity;
+}
+
+vector<double> Projectile::getYVelocity() {
+	return yVelocity;
+}
+
+void Projectile::setAx(double newAx) {
+	this->Ax = newAx;
+}
+
+void Projectile::setAy(double newAy) {
+	this->Ay = newAy;
+}
+
+double Projectile::getAx() {
+	return Ax;
+}
+
+double Projectile::getAy() {
+	return Ay;
 }
 
 double Projectile::getDiameter() {

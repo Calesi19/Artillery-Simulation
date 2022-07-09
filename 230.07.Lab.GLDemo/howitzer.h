@@ -22,6 +22,8 @@ public:
 	Howitzer() {
 		point.setPixelsX(700 / 2.0);
 		point.setPixelsY(500);
+		angle = 0;
+		canFire = true;
 	}
 
 

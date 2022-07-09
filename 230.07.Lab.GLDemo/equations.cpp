@@ -1,7 +1,6 @@
 ﻿
 
 #include <cmath>
-#include "position.cpp"
 #define _USE_MATH_DEFINES   // For defining Pi
 #include <cassert>      // for ASSERT
 #include "uiInteract.h" // for INTERFACE
@@ -130,17 +129,17 @@ double radiansFromDegrees(double degrees) {
 	* OUTPUT
 	*     r : radians from 0 to 2pi
 	**************************************************/
-	return degrees * (M_PI / 180);
+	return degrees * (3.14 / 180);
 }
 
 
 
-float convertSpeedtoHorizontal(double speed, double angle)
+double convertSpeedtoHorizontal(double speed, double angle)
 {
 	return speed * cos(angle);
 }
 
-float getAngleFromComponents(double speedX, double speedY)
+double getAngleFromComponents(double speedX, double speedY)
 {
 	return atan(speedX * speedY);
 }
@@ -155,7 +154,7 @@ struct Mapping
 {
 	double domain;
 	double range;
-}
+};
 
 inline double linearInterpolation(double d0, double r0, double d1, double r1, double d)
 {
@@ -327,6 +326,12 @@ int physics() {
 	double velocity = 827;
 	double angle = 80;
 	double radians = radiansFromDegrees(angle);
+
+	// Remove later (Projectile attributes)
+	double mass = 46.7;
+	double surfaceArea = 2;
+
+
 	vector<double> V;
 	V.push_back(velocity);
 
