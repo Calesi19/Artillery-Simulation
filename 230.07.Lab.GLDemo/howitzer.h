@@ -34,6 +34,9 @@ public:
 	//Projectile projectile();
 
 	// Getters
+
+	Position& getPosition() { return point; }
+
 	double getAngle()           const { return angle; }
 
 	double getXPosition()       const { return point.getMetersX(); }
@@ -47,10 +50,14 @@ public:
 
 	void setYPosition(double yMeters) { point.setMetersY(yMeters); }
 
-private:
-	bool canFire;
-	double angle;
+
+	bool canFire = true;
+	double angle = 0;
 	Position point;
+
+
+private:
+	
 
 
 	

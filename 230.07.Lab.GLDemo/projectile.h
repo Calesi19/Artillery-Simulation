@@ -1,8 +1,10 @@
 #pragma once
 #include "position.h"
-#include "equations.cpp"
+#include "equations.h"
 #include <vector>
 #include <iostream>
+
+using namespace std;
 
 class TestProjectile;
 
@@ -14,26 +16,32 @@ public:
 	friend TestProjectile;
 
 	double mass = 46.7;
-	Position position = Position(0, 0);
+	
 	double diameter = 154.89;
+	
+	vector<Position> projectilePath;
+
+	Position position;
 
 	double iVelocity = 827;
 
-	vector<double> Velocity;
+	vector<double> velocity;
 	vector<double> xVelocity;
 	vector<double> yVelocity;
 
-	double angle;
+	double angle = 0;
 	double radians;
 
 
 	bool isMoving = false;
 	double hangTime = 0;
 
-	double surfaceArea = circleArea((diameter / 2)) / 1000000;
+	double surfaceArea = 3.14 * pow(diameter / 2, 2) / 1000000;
 
 	double Ax;
 	double Ay;
+
+	double dt = .01;
 	
 
 	bool checkIsMoving();

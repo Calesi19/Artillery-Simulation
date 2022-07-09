@@ -19,6 +19,7 @@
 #include "test.h"
 #include "howitzer.h"
 #include "Projectile.h"
+#include "equations.h"
 using namespace std;
 
 /*************************************************************************
@@ -30,29 +31,27 @@ class Demo
 public:
     Demo(Position ptUpperRight) :
         ptUpperRight(ptUpperRight),
-        ground(ptUpperRight),
-        time(0.0),
-        angle(0.0)
+        ground(ptUpperRight)
+ 
+
     {
-        ptHowitzer.setPixelsX(Position(ptUpperRight).getPixelsX() / 2.0);
-        ground.reset(ptHowitzer);
-        projectilePath[0].setPixelsX(Position(ptUpperRight).getPixelsX() / 2.0);
-        projectilePath[0].setPixelsY(Position(ptHowitzer).getPixelsY());
+        howitzer.getPosition().setPixelsX(Position(ptUpperRight).getPixelsX() / 2.0);
+        ground.reset(howitzer.getPosition());
+
+        Position position;
+        position.setPixelsX(Position(ptUpperRight).getPixelsX() / 2.0);
+        position.setPixelsY(Position(howitzer.getPosition()).getPixelsY());
+
+        projectile.projectilePath.push_back(position);
     }
 
     Ground ground;                 // the ground
-    Position  projectilePath[20];  // path of the projectile
-    Position  ptHowitzer;          // location of the howitzer
+   
     Position  ptUpperRight;        // size of the screen
-    double angle;                  // angle of the howitzer 
-    double time;                   // amount of time since the last firing
-
-
+   
     Howitzer howitzer;
     Projectile projectile;
-
-
-
+    Equations equations;
 
 
 };
@@ -76,72 +75,79 @@ void callBack(const Interface* pUI, void* p)
 
     // move a large amount
     if (pUI->isRight())
-        pDemo->angle += 0.05;
+        pDemo->howitzer.angle += 0.05;
     if (pUI->isLeft())
-        pDemo->angle -= 0.05;
+        pDemo->howitzer.angle -= 0.05;
 
     // move by a little
     if (pUI->isUp())
-        pDemo->angle += (pDemo->angle >= 0 ? -0.003 : 0.003);
+        pDemo->howitzer.angle += (pDemo->howitzer.angle >= 0 ? -0.003 : 0.003);
     if (pUI->isDown())
-        pDemo->angle += (pDemo->angle >= 0 ? 0.003 : -0.003);
+        pDemo->howitzer.angle += (pDemo->howitzer.angle >= 0 ? 0.003 : -0.003);
 
     // fire that gun
     if (pUI->isSpace())
-        pDemo->time = 0.0;
+        pDemo->projectile.hangTime = 0.0;
 
     //
     // perform all the game logic
     //
 
+    
 
 
-    // advance time by half a second.
-    pDemo->time += 0.5;
+    
 
-    //pDemo->projectilePath->setPixelsX(50);
-    while (projectilePath.getPixelsY.back() >= 0) {
-        Ax = -(1 / (2 * mass)) * getDragCoefficient(V.back(), y.back()) * getAirDensity(y.back()) * surfaceArea * V.back() * Vx.back();
-        Ay = -(1 / (2 * mass)) * getDragCoefficient(V.back(), y.back()) * getAirDensity(y.back()) * surfaceArea * V.back() * Vy.back() - getGravity(y.back());
-        Vx.push_back(Vx.back() + Ax * dt);
-        Vy.push_back(Vy.back() + Ay * dt);
-        V.push_back(computeTotalComponent(Vx.back(), Vy.back()));
-        x.push_back(x.back() + Vx.back() * dt);
-        y.push_back(y.back() + Vy.back() * dt);
-        time += dt;
-    }
 
-    /* move the projectile across the screen
-    for (int i = 0; i < 20; i++)
-    {
-        double x = pDemo->projectilePath[i].getPixelsX();
-        x -= 1.0;
-        if (x < 0)
-            x = pDemo->ptUpperRight.getPixelsX();
-        pDemo->projectilePath[i].setPixelsX(x);
-    }
-    */
     //
     // draw everything
     //
 
     ogstream gout(Position(10.0, pDemo->ptUpperRight.getPixelsY() - 20.0));
 
-    // draw the ground first
-    pDemo->ground.draw(gout);
 
-    // draw the howitzer
-    gout.drawHowitzer(pDemo->ptHowitzer, pDemo->angle, pDemo->time);
 
-    // draw the projectile
-    for (int i = 0; i < 20; i++)
-        gout.drawProjectile(pDemo->projectilePath[i], 0.5 * (double)i);
+    while (pDemo->projectile.projectilePath.back().getPixelsY() >= 0) {
 
-    // draw some text on the screen
-    gout.setf(ios::fixed | ios::showpoint);
-    gout.precision(1);
-    gout << "Time since the bullet was fired: "
-        << pDemo->time << "s\n";
+        // draw the ground first
+        pDemo->ground.draw(gout);
+
+
+        // draw the howitzer
+        gout.drawHowitzer(pDemo->howitzer.point, pDemo->howitzer.angle, pDemo->projectile.hangTime);
+
+
+        pDemo->projectile.Ax = -(1 / (2 * pDemo->projectile.mass)) * pDemo->equations.getDragCoefficient(pDemo->projectile.velocity.back(), pDemo->projectile.projectilePath.back().getMetersY()) * pDemo->equations.getAirDensity(pDemo->projectile.projectilePath.back().getMetersY()) * pDemo->projectile.surfaceArea * pDemo->projectile.velocity.back() * pDemo->projectile.xVelocity.back();
+        pDemo->projectile.Ay = -(1 / (2 * pDemo->projectile.mass)) * pDemo->equations.getDragCoefficient(pDemo->projectile.velocity.back(), pDemo->projectile.projectilePath.back().getMetersY()) * pDemo->equations.getAirDensity(pDemo->projectile.projectilePath.back().getMetersY()) * pDemo->projectile.surfaceArea * pDemo->projectile.velocity.back() * pDemo->projectile.yVelocity.back() - pDemo->equations.getGravity(pDemo->projectile.projectilePath.back().getMetersY());
+        pDemo->projectile.xVelocity.push_back(pDemo->projectile.xVelocity.back() + pDemo->projectile.Ax * pDemo->projectile.dt);
+        pDemo->projectile.yVelocity.push_back(pDemo->projectile.yVelocity.back() + pDemo->projectile.Ay * pDemo->projectile.dt);
+        pDemo->projectile.velocity.push_back(pDemo->equations.computeTotalComponent(pDemo->projectile.xVelocity.back(), pDemo->projectile.yVelocity.back()));
+        pDemo->projectile.position.setMetersX(pDemo->projectile.projectilePath.back().getMetersX() + pDemo->projectile.xVelocity.back() * pDemo->projectile.dt);
+        pDemo->projectile.position.setMetersY(pDemo->projectile.projectilePath.back().getMetersY() + pDemo->projectile.yVelocity.back() * pDemo->projectile.dt);
+        pDemo->projectile.projectilePath.push_back(pDemo->projectile.position);
+        pDemo->projectile.hangTime += pDemo->projectile.dt;
+
+        for (int i = 0; i < 20; i++)
+            gout.drawProjectile(pDemo->projectile.projectilePath[pDemo->projectile.projectilePath.size() - i], 0.5 * (double)i);
+
+
+        // draw some text on the screen
+        gout.setf(ios::fixed | ios::showpoint);
+        gout.precision(1);
+        gout << "Time since the bullet was fired: "
+            << pDemo->projectile.hangTime << "s\n";
+    }
+
+    
+    
+
+    
+
+    
+
+    
+
+    
 }
 
 double Position::metersFromPixels = 40.0;

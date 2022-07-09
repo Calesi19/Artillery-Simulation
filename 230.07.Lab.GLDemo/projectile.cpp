@@ -36,11 +36,11 @@ void Projectile::setYPosition(double value) {
 }
 
 void Projectile::setVelocity(double velocity) {
-	this->velocity = velocity;
+	this->velocity.push_back(velocity);
 }
 
 double Projectile::getVelocity() {
-	return this->velocity;
+	return this->velocity.back();
 }
 
 double Projectile::getDiameter() {

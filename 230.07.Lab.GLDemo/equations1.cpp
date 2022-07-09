@@ -1,8 +1,18 @@
-﻿#include "equations.h"
+﻿
+
+#include <cmath>
+#include "position.cpp"
+#define _USE_MATH_DEFINES   // For defining Pi
+#include <cassert>      // for ASSERT
+#include "uiInteract.h" // for INTERFACE
+#include "uiDraw.h"     // for RANDOM and DRAW*
+#include "ground.h"     // for GROUND
+#include "position.h"   // for POSITION
+#include <vector>
 using namespace std;
 
 
-double Equations::dragForce(double c, double p, double v, double a) {
+double dragForce(double c, double p, double v, double a) {
 
 	/* DRAG FORCE EQUATION
 
@@ -18,7 +28,7 @@ double Equations::dragForce(double c, double p, double v, double a) {
 }
 
 
-double Equations::circleArea(double r) {
+double circleArea(double r) {
 
 	/*
 	a = area of a circle (m2)
@@ -31,7 +41,7 @@ double Equations::circleArea(double r) {
 }
 
 
-double Equations::findForce(double m, double a) {
+double findForce(double m, double a) {
 
 	/*
 	f = force in newtons (N)
@@ -45,7 +55,7 @@ double Equations::findForce(double m, double a) {
 
 
 
-double Equations::computeVerticalComponent(double a, double total) {
+double computeVerticalComponent(double a, double total) {
 	/***********************************************
 	 * COMPUTE VERTICAL COMPONENT
 	 * Find the vertical component of a velocity or acceleration.
@@ -66,7 +76,7 @@ double Equations::computeVerticalComponent(double a, double total) {
 	 ***********************************************/
 	return total * cos(a);
 }
-double Equations::computeHorizontalComponent(double a, double total) {
+double computeHorizontalComponent(double a, double total) {
 	/***********************************************
 	 * COMPUTE HORIZONTAL COMPONENT
 	 * Find the horizontal component of a velocity or acceleration.
@@ -88,7 +98,7 @@ double Equations::computeHorizontalComponent(double a, double total) {
 	return total * sin(a);
 }
 
-double Equations::computeTotalComponent(double x, double y) {
+double computeTotalComponent(double x, double y) {
 	/************************************************
 	* COMPUTE TOTAL COMPONENT
 	* Given the horizontal and vertical components of
@@ -110,7 +120,7 @@ double Equations::computeTotalComponent(double x, double y) {
 	***********************************************/
 	return sqrt(pow(x, 2) + pow(y, 2));
 }
-double Equations::radiansFromDegrees(double degrees) {
+double radiansFromDegrees(double degrees) {
 	/*************************************************
 	* RADIANS FROM DEGREES
 	* Convert degrees to radians:
@@ -120,28 +130,34 @@ double Equations::radiansFromDegrees(double degrees) {
 	* OUTPUT
 	*     r : radians from 0 to 2pi
 	**************************************************/
-	return degrees * (3.14 / 180);
+	return degrees * (3.14/ 180);
 }
 
 
 
-double Equations::convertSpeedtoHorizontal(double speed, double angle)
+float convertSpeedtoHorizontal(double speed, double angle)
 {
 	return speed * cos(angle);
 }
 
-double Equations::getAngleFromComponents(double speedX, double speedY)
+float getAngleFromComponents(double speedX, double speedY)
 {
 	return atan(speedX * speedY);
 }
 
-float Equations::getSpeedFromComponents(float speedX, float speedY)
+float getSpeedFromComponents(float speedX, float speedY)
 {
 	float speed = sqrt(speedX * speedX + speedY * speedY);
 	return speed;
 }
 
-inline double Equations::linearInterpolation(double d0, double r0, double d1, double r1, double d)
+struct Mapping
+{
+	double domain;
+	double range;
+};
+
+inline double linearInterpolation(double d0, double r0, double d1, double r1, double d)
 {
 	if (d1 - d0 != 0.0)
 		return r0 + (r1 - r0) * (d - d0) / (d1 - d0);
@@ -150,13 +166,13 @@ inline double Equations::linearInterpolation(double d0, double r0, double d1, do
 }
 
 
-inline double Equations::linearInterpolation(const Mapping& zero, const Mapping& one, double d) {
+inline double linearInterpolation(const Mapping& zero, const Mapping& one, double d) {
 	return linearInterpolation(zero.domain, zero.range, one.domain, one.range, d);
 }
 
 
 
-double Equations::linearInterpolation(const Mapping mapping[], int numMapping, double domain) {
+double linearInterpolation(const Mapping mapping[], int numMapping, double domain) {
 	// Too small to be on the scale
 	if (domain < mapping[0].domain)
 		return mapping[0].range;
@@ -173,7 +189,7 @@ double Equations::linearInterpolation(const Mapping mapping[], int numMapping, d
 	return mapping[numMapping - 1].range;
 }
 
-double Equations::getSpeedOfSound(double altitude) {
+double getSpeedOfSound(double altitude) {
 	const Mapping soundSpeedMapping[] =
 	{
 		{0.0     ,  340.0},
@@ -203,9 +219,7 @@ double Equations::getSpeedOfSound(double altitude) {
 
 
 
-
-
-double Equations::getDragCoefficient(double speed, double altitude) {
+double getDragCoefficient(double speed, double altitude) {
 	double machSpeed = speed / getSpeedOfSound(altitude);
 
 	const Mapping dragMapping[] =
@@ -233,15 +247,12 @@ double Equations::getDragCoefficient(double speed, double altitude) {
 	cout << dragCoefficient << endl;
 	return dragCoefficient;
 
-
-
-
 }
 
 
 
 
-double Equations::getAirDensity(double altitude) {
+double getAirDensity(double altitude) {
 
 	const Mapping densityMapping[] =
 	{ //altitude   density
@@ -273,7 +284,7 @@ double Equations::getAirDensity(double altitude) {
 }
 
 
-double Equations::getGravity(double altitude) {
+double getGravity(double altitude) {
 	const Mapping gravityMapping[] =
 	{
 		{0.0, 9.807},
@@ -303,6 +314,8 @@ double Equations::getGravity(double altitude) {
 
 }
 
+
+
 /*
 int physics() {
 	double distance;
@@ -312,12 +325,6 @@ int physics() {
 	double velocity = 827;
 	double angle = 80;
 	double radians = radiansFromDegrees(angle);
-
-	// Remove later (Projectile attributes)
-	double mass = 46.7;
-	double surfaceArea = 2;
-
-
 	vector<double> V;
 	V.push_back(velocity);
 
@@ -350,6 +357,4 @@ int physics() {
 	distance = x.back();
 	cout << "Distance:      " << distance << "m       Hang Time : " << time << "s" << endl;
 	return 0;
-}
-
-*/
+}*/
