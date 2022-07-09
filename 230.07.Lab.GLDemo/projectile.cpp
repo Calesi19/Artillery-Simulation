@@ -69,5 +69,5 @@ double Projectile::getHangTime() {
 }
 
 double Projectile::getSurfaceArea() {
-	return 3.14 * pow((this->getDiameter() / 2), 2);
+	return this->surfaceArea;
 }
