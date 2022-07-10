@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/230.07.Lab.GLDemo/.vs/Lab07
+/230.07.Lab.GLDemo/Debug
+/230.07.Lab.GLDemo/x64/Debug
+/230.07.Lab.GLDemo/Header.h
+/.vs/Artillery2/v17
+/.vs/Artillery2/FileContentIndex

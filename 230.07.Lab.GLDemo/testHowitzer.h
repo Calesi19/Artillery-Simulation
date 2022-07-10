@@ -186,7 +186,7 @@ private:
         how.point.x = 5;
         how.point.y = 5;
         // exercise
-        float angle = how.getAngle();
+        double angle = how.getAngle();
         // verify
         assert(angle == 45);
     }  // teardown
@@ -200,7 +200,7 @@ private:
         how.point.x = 5;
         how.point.y = 5;
         // exercise
-        float xPos = how.getXPosition();
+        double xPos = how.getXPosition();
         // verify
         assert(xPos == 5);
     }  // teardown
@@ -214,7 +214,7 @@ private:
         how.point.x = 5;
         how.point.y = 5;
         // exercise
-        float yPos = how.getYPosition();
+        double yPos = how.getYPosition();
         // verify
         assert(yPos == 5);
     }  // teardown

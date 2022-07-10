@@ -6,6 +6,18 @@
 
 
 
+double Projectile::circleArea(double r) {
+
+	/*
+	a = area of a circle (m2)
+	r = radius of a circle
+	*/
+
+	double a = 3.14 * pow(r, 2);
+	return a;
+
+}
+
 
 bool Projectile::checkIsMoving() {
 	return this->isMoving;
@@ -35,6 +47,7 @@ void Projectile::setXPosition(double value) {
 void Projectile::setYPosition(double value) {
 	this->position.setMetersY(value);
 }
+
 
 void Projectile::setVelocity(double velocity) {
 	this->velocity.push_back(velocity);

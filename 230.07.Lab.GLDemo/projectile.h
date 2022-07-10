@@ -57,6 +57,9 @@ public:
 
 	double dt = .5;
 	
+	double circleArea(double r);
+
+	double surfaceArea = circleArea((diameter / 2)) / 1000000;
 
 	bool checkIsMoving();
 
@@ -74,7 +77,23 @@ public:
 
 	void setVelocity(double velocity);
 
-	double getVelocity();
+	void setXVelocity(double velocity);
+
+	void setYVelocity(double velocity);
+
+	vector<double> getVelocity();
+
+	vector<double> getXVelocity();
+
+	vector<double> getYVelocity();
+
+	void setAx(double newAx);
+
+	void setAy(double newAy);
+
+	double getAx();
+
+	double getAy();
 
 	double getDiameter();
 

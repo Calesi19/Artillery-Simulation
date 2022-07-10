@@ -10,7 +10,7 @@
 #include "test.h"
 #include "testPosition.h"
 #include "testGround.h"
-#include "test_projectile.cpp"
+//#include "test_projectile.cpp"
 #include "testHowitzer.h"
 
 /*****************************************************************
@@ -21,7 +21,7 @@ void testRunner()
 {
    TestPosition().run();
    TestGround().run();
-   testProjectile().run();
+   //testProjectile().run();
    TestHowitzer().run();
    cout << "Tests completed";
 }

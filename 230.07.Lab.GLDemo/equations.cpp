@@ -1,4 +1,4 @@
-﻿#include "equations.h"
+#include "equations.h"
 using namespace std;
 
 
@@ -125,10 +125,13 @@ double Equations::radiansFromDegrees(double degrees) {
 
 
 
+
 double Equations::convertSpeedtoHorizontal(double speed, double angle)
+
 {
 	return speed * cos(angle);
 }
+
 
 double Equations::getAngleFromComponents(double speedX, double speedY)
 {
@@ -140,6 +143,7 @@ float Equations::getSpeedFromComponents(float speedX, float speedY)
 	float speed = sqrt(speedX * speedX + speedY * speedY);
 	return speed;
 }
+
 
 inline double Equations::linearInterpolation(double d0, double r0, double d1, double r1, double d)
 {
