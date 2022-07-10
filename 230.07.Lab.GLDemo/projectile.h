@@ -1,5 +1,6 @@
 #pragma once
 #include "position.h"
+#include "equations.h"
 #include <vector>
 #include <iostream>
 
@@ -12,27 +13,49 @@ class Projectile {
 
 
 public:
+
+
+	Projectile() {
+		for (int i = 0; i < 21; i++) {
+			projectilePath.push_back(position);
+		}
+
+		velocity.push_back(827);
+
+		
+
+	}
+
+
+
 	friend TestProjectile;
 
 	double mass = 46.7;
-	Position position = Position(0, 0);
+	
 	double diameter = 154.89;
+	
+	vector<Position> projectilePath;
 
-	double iVelocity = 827;
+	Position position = Position(0,0);
+
 
 	vector<double> velocity;
 	vector<double> xVelocity;
 	vector<double> yVelocity;
 
-	double angle;
-	double radians;
+	double angle = 0;
+	double radians = angle * (3.14 / 180);
 
 
 	bool isMoving = false;
 	double hangTime = 0;
 
-	double Ax;
-	double Ay;
+	double surfaceArea = 3.14 * pow(diameter / 2, 2) / 1000000;
+
+	double Ax = 0;
+	double Ay = 0;
+
+	double dt = .5;
 	
 	double circleArea(double r);
 

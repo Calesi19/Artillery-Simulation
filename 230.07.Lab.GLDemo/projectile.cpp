@@ -24,7 +24,8 @@ bool Projectile::checkIsMoving() {
 }
 
 void Projectile::setAngle(double angle) {
-	this->angle = angle;
+	this->angle = angle * 100 + 90;
+	this->radians = this->angle * (3.14 / 180);
 }
 
 double Projectile::getAngle() {
@@ -47,44 +48,13 @@ void Projectile::setYPosition(double value) {
 	this->position.setMetersY(value);
 }
 
-void Projectile::setVelocity(double newVelocity) {
-	this->velocity.push_back(newVelocity);
+
+void Projectile::setVelocity(double velocity) {
+	this->velocity.push_back(velocity);
 }
 
-void Projectile::setXVelocity(double newVelocity) {
-	this->xVelocity.push_back(newVelocity);
-}
-
-void Projectile::setYVelocity(double newVelocity) {
-	this->yVelocity.push_back(newVelocity);
-}
-
-vector<double> Projectile::getVelocity() {
-	return velocity;
-}
-
-vector<double> Projectile::getXVelocity() {
-	return xVelocity;
-}
-
-vector<double> Projectile::getYVelocity() {
-	return yVelocity;
-}
-
-void Projectile::setAx(double newAx) {
-	this->Ax = newAx;
-}
-
-void Projectile::setAy(double newAy) {
-	this->Ay = newAy;
-}
-
-double Projectile::getAx() {
-	return Ax;
-}
-
-double Projectile::getAy() {
-	return Ay;
+double Projectile::getVelocity() {
+	return this->velocity.back();
 }
 
 double Projectile::getDiameter() {
