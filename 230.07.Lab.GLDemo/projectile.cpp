@@ -12,7 +12,8 @@ bool Projectile::checkIsMoving() {
 }
 
 void Projectile::setAngle(double angle) {
-	this->angle = angle;
+	this->angle = angle * 100 + 90;
+	this->radians = this->angle * (3.14 / 180);
 }
 
 double Projectile::getAngle() {

@@ -37,7 +37,7 @@ public:
 
 	Position& getPosition() { return point; }
 
-	double getAngle()           const { return angle; }
+	double getAngle()           const { return this->angle; }
 
 	double getXPosition()       const { return point.getMetersX(); }
 

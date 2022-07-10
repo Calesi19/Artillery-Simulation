@@ -230,7 +230,7 @@ double Equations::getDragCoefficient(double speed, double altitude) {
 
 
 	double dragCoefficient = linearInterpolation(dragMapping, sizeof(dragMapping) / sizeof(dragMapping[0]), machSpeed);
-	cout << dragCoefficient << endl;
+	
 	return dragCoefficient;
 
 

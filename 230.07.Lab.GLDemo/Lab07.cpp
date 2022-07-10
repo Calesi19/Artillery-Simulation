@@ -38,11 +38,9 @@ public:
         howitzer.getPosition().setPixelsX(Position(ptUpperRight).getPixelsX() / 2.0);
         ground.reset(howitzer.getPosition());
 
-        Position position;
-        position.setPixelsX(Position(ptUpperRight).getPixelsX() / 2.0);
-        position.setPixelsY(Position(howitzer.getPosition()).getPixelsY());
+       
 
-        projectile.projectilePath.push_back(position);
+        
     }
 
     Ground ground;                 // the ground
@@ -86,8 +84,66 @@ void callBack(const Interface* pUI, void* p)
         pDemo->howitzer.angle += (pDemo->howitzer.angle >= 0 ? 0.003 : -0.003);
 
     // fire that gun
-    if (pUI->isSpace())
+    if ((pUI->isSpace()) && (!pDemo->projectile.checkIsMoving())) {
+
+        pDemo->projectile.projectilePath.push_back(pDemo->howitzer.getPosition());
         pDemo->projectile.hangTime = 0.0;
+        pDemo->projectile.setVelocity(827);
+
+        
+        pDemo->projectile.radians = pDemo->howitzer.angle;
+        
+
+        pDemo->projectile.xVelocity.push_back(pDemo->projectile.velocity.back() * sin(pDemo->projectile.radians));
+        pDemo->projectile.yVelocity.push_back(pDemo->projectile.velocity.back() * cos(pDemo->projectile.radians));
+        cout << pDemo->projectile.radians << endl;
+        cout << pDemo->howitzer.angle << endl;
+        pDemo->projectile.toggleIsMoving();
+        pDemo->howitzer.toggleCanFire();
+
+    }
+
+                                                          
+    if (pDemo->projectile.position.getMetersY() < 0)
+    {
+        cout << "hit";
+        
+        pDemo->projectile.position = pDemo->howitzer.getPosition();
+        
+        pDemo->projectile.projectilePath.push_back(pDemo->projectile.position);
+        pDemo->projectile.setVelocity(0);
+        pDemo->projectile.Ax = 0;
+        pDemo->projectile.Ay = 0;
+        pDemo->howitzer.toggleCanFire();
+        pDemo->projectile.toggleIsMoving();
+    }
+
+
+
+
+
+
+
+
+    if (pDemo->projectile.isMoving) {
+        pDemo->projectile.Ax = -(1 / (2 * pDemo->projectile.mass)) * pDemo->equations.getDragCoefficient(pDemo->projectile.velocity.back(), pDemo->projectile.projectilePath.back().getMetersY()) * pDemo->equations.getAirDensity(pDemo->projectile.projectilePath.back().getMetersY()) * pDemo->projectile.surfaceArea * pDemo->projectile.velocity.back() * pDemo->projectile.xVelocity.back();
+        pDemo->projectile.Ay = -(1 / (2 * pDemo->projectile.mass)) * pDemo->equations.getDragCoefficient(pDemo->projectile.velocity.back(), pDemo->projectile.projectilePath.back().getMetersY()) * pDemo->equations.getAirDensity(pDemo->projectile.projectilePath.back().getMetersY()) * pDemo->projectile.surfaceArea * pDemo->projectile.velocity.back() * pDemo->projectile.yVelocity.back() - pDemo->equations.getGravity(pDemo->projectile.projectilePath.back().getMetersY());
+        pDemo->projectile.xVelocity.push_back(pDemo->projectile.xVelocity.back() + pDemo->projectile.Ax * pDemo->projectile.dt);
+        pDemo->projectile.yVelocity.push_back(pDemo->projectile.yVelocity.back() + pDemo->projectile.Ay * pDemo->projectile.dt);
+        pDemo->projectile.velocity.push_back(pDemo->equations.computeTotalComponent(pDemo->projectile.xVelocity.back(), pDemo->projectile.yVelocity.back()));
+        pDemo->projectile.position.setMetersX(pDemo->projectile.projectilePath.back().getMetersX() + pDemo->projectile.xVelocity.back() * pDemo->projectile.dt);
+        pDemo->projectile.position.setMetersY(pDemo->projectile.projectilePath.back().getMetersY() + pDemo->projectile.yVelocity.back() * pDemo->projectile.dt);
+        pDemo->projectile.projectilePath.push_back(pDemo->projectile.position);
+        pDemo->projectile.hangTime += pDemo->projectile.dt;
+    }
+
+
+
+
+
+
+
+
 
     //
     // perform all the game logic
@@ -106,37 +162,28 @@ void callBack(const Interface* pUI, void* p)
     ogstream gout(Position(10.0, pDemo->ptUpperRight.getPixelsY() - 20.0));
 
 
-
-    while (pDemo->projectile.projectilePath.back().getPixelsY() >= 0) {
-
-        // draw the ground first
-        pDemo->ground.draw(gout);
+    // draw the ground first
+    pDemo->ground.draw(gout);
 
 
-        // draw the howitzer
-        gout.drawHowitzer(pDemo->howitzer.point, pDemo->howitzer.angle, pDemo->projectile.hangTime);
+    // draw the howitzer
+    gout.drawHowitzer(pDemo->howitzer.point, pDemo->howitzer.angle, pDemo->projectile.hangTime);
 
 
-        pDemo->projectile.Ax = -(1 / (2 * pDemo->projectile.mass)) * pDemo->equations.getDragCoefficient(pDemo->projectile.velocity.back(), pDemo->projectile.projectilePath.back().getMetersY()) * pDemo->equations.getAirDensity(pDemo->projectile.projectilePath.back().getMetersY()) * pDemo->projectile.surfaceArea * pDemo->projectile.velocity.back() * pDemo->projectile.xVelocity.back();
-        pDemo->projectile.Ay = -(1 / (2 * pDemo->projectile.mass)) * pDemo->equations.getDragCoefficient(pDemo->projectile.velocity.back(), pDemo->projectile.projectilePath.back().getMetersY()) * pDemo->equations.getAirDensity(pDemo->projectile.projectilePath.back().getMetersY()) * pDemo->projectile.surfaceArea * pDemo->projectile.velocity.back() * pDemo->projectile.yVelocity.back() - pDemo->equations.getGravity(pDemo->projectile.projectilePath.back().getMetersY());
-        pDemo->projectile.xVelocity.push_back(pDemo->projectile.xVelocity.back() + pDemo->projectile.Ax * pDemo->projectile.dt);
-        pDemo->projectile.yVelocity.push_back(pDemo->projectile.yVelocity.back() + pDemo->projectile.Ay * pDemo->projectile.dt);
-        pDemo->projectile.velocity.push_back(pDemo->equations.computeTotalComponent(pDemo->projectile.xVelocity.back(), pDemo->projectile.yVelocity.back()));
-        pDemo->projectile.position.setMetersX(pDemo->projectile.projectilePath.back().getMetersX() + pDemo->projectile.xVelocity.back() * pDemo->projectile.dt);
-        pDemo->projectile.position.setMetersY(pDemo->projectile.projectilePath.back().getMetersY() + pDemo->projectile.yVelocity.back() * pDemo->projectile.dt);
-        pDemo->projectile.projectilePath.push_back(pDemo->projectile.position);
-        pDemo->projectile.hangTime += pDemo->projectile.dt;
-
-        for (int i = 0; i < 20; i++)
-            gout.drawProjectile(pDemo->projectile.projectilePath[pDemo->projectile.projectilePath.size() - i], 0.5 * (double)i);
+        
+   
+    for (int i = 1; i < 20; i++)
+        gout.drawProjectile(pDemo->projectile.projectilePath[pDemo->projectile.projectilePath.size() - i], 0.5 * (double)i);
+     
 
 
-        // draw some text on the screen
-        gout.setf(ios::fixed | ios::showpoint);
-        gout.precision(1);
-        gout << "Time since the bullet was fired: "
-            << pDemo->projectile.hangTime << "s\n";
-    }
+
+    // draw some text on the screen
+    gout.setf(ios::fixed | ios::showpoint);
+    gout.precision(1);
+    gout << "Time since the bullet was fired: "
+        << pDemo->projectile.hangTime << "s\n";
+    
 
     
     
