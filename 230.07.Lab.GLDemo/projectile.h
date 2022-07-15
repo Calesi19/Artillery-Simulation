@@ -6,7 +6,7 @@
 
 using namespace std;
 
-class TestProjectile;
+//class TestProjectile;
 
 class Projectile {
 	
@@ -28,7 +28,7 @@ public:
 
 
 
-	friend TestProjectile;
+	//friend TestProjectile;
 
 	double mass = 46.7;
 	
@@ -59,8 +59,6 @@ public:
 	
 	double circleArea(double r);
 
-	double surfaceArea = circleArea((diameter / 2)) / 1000000;
-
 	bool checkIsMoving();
 
 	void setAngle(double angle);
@@ -81,7 +79,7 @@ public:
 
 	void setYVelocity(double velocity);
 
-	vector<double> getVelocity();
+	double getVelocity();
 
 	vector<double> getXVelocity();
 

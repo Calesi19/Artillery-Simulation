@@ -103,7 +103,8 @@ void callBack(const Interface* pUI, void* p)
 
     }
 
-                                                          
+    // TODO: Make this line of code work without an assertion failure
+    //if (pDemo->projectile.position.getPixelsY() <= pDemo->ground.getElevationMeters(pDemo->projectile.position))                                  
     if (pDemo->projectile.position.getMetersY() < 0)
     {
         cout << "hit";
