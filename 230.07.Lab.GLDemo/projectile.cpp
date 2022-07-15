@@ -85,3 +85,15 @@ double Projectile::getHangTime() {
 double Projectile::getSurfaceArea() {
 	return this->surfaceArea;
 }
+
+void Projectile::reset(Position ptUpperRight) {
+	// Resets the projectile's position (usually) after colliding with something
+	position = ptUpperRight;
+
+	projectilePath.push_back(position);
+	setVelocity(0);
+	Ax = 0;
+	Ay = 0;
+	toggleIsMoving();
+	return;
+}

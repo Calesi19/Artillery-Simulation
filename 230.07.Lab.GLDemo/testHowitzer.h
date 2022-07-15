@@ -26,17 +26,10 @@ class TestHowitzer
 public:
     void run()
     {
-        // Test canFire() function
-        falseCanFire();
-        trueCanFire();
 
         // Test toggleCanFire
         toggleCanFire1();
         toggleCanFire2();
-
-        // Test fireProjectile
-        invalidFireProjectile();
-        validFireProjectile();
 
         // Test setters
         setAngle();
@@ -51,31 +44,6 @@ public:
 
 private:
 
-    void falseCanFire() const
-    {   // setup
-        Howitzer how;
-        how.canFire = false;
-        how.angle = 45;
-        how.point.x = 5;
-        how.point.y = 5;
-        // exercise
-        bool result = how.checkCanFire();
-        // verify
-        assert(result == false);
-    }  // teardown
-
-    void trueCanFire() const
-    {   // setup
-        Howitzer how;
-        how.canFire = true;
-        how.angle = 45;
-        how.point.x = 5;
-        how.point.y = 5;
-        // exercise
-        bool result = how.checkCanFire();
-        // verify
-        assert(result == true);
-    }  // teardown
     
     void toggleCanFire1() const
     {   // setup
@@ -101,38 +69,6 @@ private:
         how.toggleCanFire();
         // verify
         assert(how.canFire == true);
-    }  // teardown
-
-    void invalidFireProjectile() const
-    {
-        // setup
-        Howitzer how;
-        how.canFire = false;
-        how.angle = 45;
-        how.point.x = 5;
-        how.point.y = 5;
-        // exercise
-        how.fireProjectile();
-        // verify
-        assert(how.canFire == false);
-        assert(how.angle == 45);
-        //assert(how.projectile == NULL);
-    }  // teardown
-
-    void validFireProjectile() const
-    {
-        // setup
-        Howitzer how;
-        how.canFire = true;
-        how.angle = 45;
-        how.point.x = 5;
-        how.point.y = 5;
-        // exercise
-        how.fireProjectile();
-        // verify
-        assert(how.canFire == false);
-        assert(how.angle == 45);
-        //assert(how.projectile != NULL);
     }  // teardown
 
     void setAngle() const

@@ -10,9 +10,6 @@
 #include "position.h"   // for POSITION
 #include <vector>
 
-
-
-
 class Equations
 {
 public:
@@ -29,12 +26,6 @@ public:
     static double computeTotalComponent(double x, double y);
 
     static double radiansFromDegrees(double degrees);
-
-    static double convertSpeedtoHorizontal(double speed, double angle);
-
-    static double getAngleFromComponents(double speedX, double speedY);
-
-    static float getSpeedFromComponents(float speedX, float speedY);
 
     struct Mapping
     {

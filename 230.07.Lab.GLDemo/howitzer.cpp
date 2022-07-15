@@ -9,23 +9,9 @@
 #include "position.h"
 #include "howitzer.h"
 
-bool Howitzer::checkCanFire()
-{
-	if (this->canFire == true)
-		return true;
-	else
-		return false;
-}
-
-void Howitzer::fireProjectile()
-{
-	// TODO: Make this function work.
-	canFire = false;
-};
-
-
 void Howitzer::toggleCanFire()
 {
+	// Toggles ability to fire to the opposite of what it currently is.
 	if (this->canFire == true)
 		this->canFire = false;
 	else

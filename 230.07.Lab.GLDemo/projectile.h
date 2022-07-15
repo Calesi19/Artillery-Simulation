@@ -36,7 +36,7 @@ public:
 	
 	vector<Position> projectilePath;
 
-	Position position = Position(0,0);
+	Position position = Position(15000,15000);
 
 
 	vector<double> velocity;
@@ -104,4 +104,6 @@ public:
 	double getHangTime();
 
 	double getSurfaceArea();
+
+	void reset(Position ptUpperRight);
 };

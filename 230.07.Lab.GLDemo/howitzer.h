@@ -26,12 +26,7 @@ public:
 		canFire = true;
 	}
 
-
-	bool checkCanFire();
-
 	void toggleCanFire();
-
-	void fireProjectile();
 
 	//Projectile projectile();
 

@@ -1,6 +1,6 @@
 /*************************************************************
  * 1. Name:
- *      The Key
+ *      Carlos Lespin and Braxton Meyer
  * 2. Assignment Name:
  *      Lab 08: M777 Howitzer
  * 3. Assignment Description:
@@ -16,10 +16,12 @@
 #include "uiDraw.h"     // for RANDOM and DRAW*
 #include "ground.h"     // for GROUND
 #include "position.h"   // for POSITION
-#include "test.h"
 #include "howitzer.h"
 #include "Projectile.h"
 #include "equations.h"
+#include <Windows.h>
+#include <WinUser.h>
+
 using namespace std;
 
 /*************************************************************************
@@ -32,14 +34,10 @@ public:
     Demo(Position ptUpperRight) :
         ptUpperRight(ptUpperRight),
         ground(ptUpperRight)
- 
 
     {
         howitzer.getPosition().setPixelsX(Position(ptUpperRight).getPixelsX() / 2.0);
         ground.reset(howitzer.getPosition());
-
-       
-
         
     }
 
@@ -50,6 +48,7 @@ public:
     Howitzer howitzer;
     Projectile projectile;
     Equations equations;
+    string centerMessage;
 
 
 };
@@ -65,125 +64,121 @@ void callBack(const Interface* pUI, void* p)
 {
     // the first step is to cast the void pointer into a game object. This
     // is the first step of every single callback function in OpenGL. 
-    Demo* pDemo = (Demo*)p;
+    Demo* pSimulation = (Demo*)p;
 
+    // Initialize the gout variable so we can print messages based on the collision logic
+    ogstream gout(Position(pSimulation->ptUpperRight.getMetersX() / 2, 500 + pSimulation->ptUpperRight.getMetersY() / 2));
+
+
+    gout << pSimulation->centerMessage;
     //
     // accept input
     //
 
     // move a large amount
     if (pUI->isRight())
-        pDemo->howitzer.angle += 0.05;
+        pSimulation->howitzer.angle += 0.05;
     if (pUI->isLeft())
-        pDemo->howitzer.angle -= 0.05;
+        pSimulation->howitzer.angle -= 0.05;
 
     // move by a little
     if (pUI->isUp())
-        pDemo->howitzer.angle += (pDemo->howitzer.angle >= 0 ? -0.003 : 0.003);
+        pSimulation->howitzer.angle += (pSimulation->howitzer.angle >= 0 ? -0.003 : 0.003);
     if (pUI->isDown())
-        pDemo->howitzer.angle += (pDemo->howitzer.angle >= 0 ? 0.003 : -0.003);
+        pSimulation->howitzer.angle += (pSimulation->howitzer.angle >= 0 ? 0.003 : -0.003);
 
     // fire that gun
-    if ((pUI->isSpace()) && (!pDemo->projectile.checkIsMoving())) {
+    if ((pUI->isSpace()) && (!pSimulation->projectile.checkIsMoving())) {
 
-        pDemo->projectile.projectilePath.push_back(pDemo->howitzer.getPosition());
-        pDemo->projectile.hangTime = 0.0;
-        pDemo->projectile.setVelocity(827);
+        // Reset the collision detection message
+        pSimulation->centerMessage = "";
 
-        
-        pDemo->projectile.radians = pDemo->howitzer.angle;
-        
 
-        pDemo->projectile.xVelocity.push_back(pDemo->projectile.velocity.back() * sin(pDemo->projectile.radians));
-        pDemo->projectile.yVelocity.push_back(pDemo->projectile.velocity.back() * cos(pDemo->projectile.radians));
-        cout << pDemo->projectile.radians << endl;
-        cout << pDemo->howitzer.angle << endl;
-        pDemo->projectile.toggleIsMoving();
-        pDemo->howitzer.toggleCanFire();
+        pSimulation->projectile.projectilePath.push_back(pSimulation->howitzer.getPosition());
+        pSimulation->projectile.hangTime = 0.0;
+        pSimulation->projectile.setVelocity(827);
+
+        pSimulation->projectile.radians = pSimulation->howitzer.angle;
+
+        pSimulation->projectile.xVelocity.push_back(pSimulation->projectile.velocity.back() * sin(pSimulation->projectile.radians));
+        pSimulation->projectile.yVelocity.push_back(pSimulation->projectile.velocity.back() * cos(pSimulation->projectile.radians));
+        cout << pSimulation->projectile.radians << endl;
+        cout << pSimulation->howitzer.angle << endl;
+        pSimulation->projectile.toggleIsMoving();
+        pSimulation->howitzer.toggleCanFire();
 
     }
-
-    // TODO: Make this line of code work without an assertion failure
-    //if (pDemo->projectile.position.getPixelsY() <= pDemo->ground.getElevationMeters(pDemo->projectile.position))                                  
-    if (pDemo->projectile.position.getMetersY() < 0)
-    {
-        cout << "hit";
-        
-        pDemo->projectile.position = pDemo->howitzer.getPosition();
-        
-        pDemo->projectile.projectilePath.push_back(pDemo->projectile.position);
-        pDemo->projectile.setVelocity(0);
-        pDemo->projectile.Ax = 0;
-        pDemo->projectile.Ay = 0;
-        pDemo->howitzer.toggleCanFire();
-        pDemo->projectile.toggleIsMoving();
-    }
-
-
-
-
-
-
-
-
-    if (pDemo->projectile.isMoving) {
-        pDemo->projectile.Ax = -(1 / (2 * pDemo->projectile.mass)) * pDemo->equations.getDragCoefficient(pDemo->projectile.velocity.back(), pDemo->projectile.projectilePath.back().getMetersY()) * pDemo->equations.getAirDensity(pDemo->projectile.projectilePath.back().getMetersY()) * pDemo->projectile.surfaceArea * pDemo->projectile.velocity.back() * pDemo->projectile.xVelocity.back();
-        pDemo->projectile.Ay = -(1 / (2 * pDemo->projectile.mass)) * pDemo->equations.getDragCoefficient(pDemo->projectile.velocity.back(), pDemo->projectile.projectilePath.back().getMetersY()) * pDemo->equations.getAirDensity(pDemo->projectile.projectilePath.back().getMetersY()) * pDemo->projectile.surfaceArea * pDemo->projectile.velocity.back() * pDemo->projectile.yVelocity.back() - pDemo->equations.getGravity(pDemo->projectile.projectilePath.back().getMetersY());
-        pDemo->projectile.xVelocity.push_back(pDemo->projectile.xVelocity.back() + pDemo->projectile.Ax * pDemo->projectile.dt);
-        pDemo->projectile.yVelocity.push_back(pDemo->projectile.yVelocity.back() + pDemo->projectile.Ay * pDemo->projectile.dt);
-        pDemo->projectile.velocity.push_back(pDemo->equations.computeTotalComponent(pDemo->projectile.xVelocity.back(), pDemo->projectile.yVelocity.back()));
-        pDemo->projectile.position.setMetersX(pDemo->projectile.projectilePath.back().getMetersX() + pDemo->projectile.xVelocity.back() * pDemo->projectile.dt);
-        pDemo->projectile.position.setMetersY(pDemo->projectile.projectilePath.back().getMetersY() + pDemo->projectile.yVelocity.back() * pDemo->projectile.dt);
-        pDemo->projectile.projectilePath.push_back(pDemo->projectile.position);
-        pDemo->projectile.hangTime += pDemo->projectile.dt;
-    }
-
-
-
-
-
-
-
 
 
     //
     // perform all the game logic
     //
 
-    
 
 
-    
+    // target collision logic
+    Position targetPosition = pSimulation->ground.getTarget();
+    if ((pSimulation->projectile.position.getPixelsX() > targetPosition.getPixelsX() - 5) && (pSimulation->projectile.position.getPixelsX() < targetPosition.getPixelsX() + 5))
+        if ((pSimulation->projectile.position.getPixelsY() > targetPosition.getPixelsY() - 5) && (pSimulation->projectile.position.getPixelsY() < targetPosition.getPixelsY() + 5))
+        {
+            pSimulation->projectile.reset(pSimulation->ptUpperRight);
+            pSimulation->howitzer.toggleCanFire();
+            pSimulation->centerMessage = "Target hit";
+        }
+    // ground collision logic
+    if (pSimulation->projectile.position.getMetersY() <= pSimulation->ground.getElevationMeters(pSimulation->projectile.position))
+    {
+        pSimulation->projectile.reset(pSimulation->ptUpperRight);
+        pSimulation->howitzer.toggleCanFire();
+        pSimulation->centerMessage = "Ground hit";
+    }
 
+    // wall collision logic
+    if (pSimulation->projectile.position.getMetersX() < 0 || pSimulation->projectile.position.getMetersX() > pSimulation->ptUpperRight.getMetersX())
+    {
+        pSimulation->projectile.reset(pSimulation->ptUpperRight);
+        pSimulation->howitzer.toggleCanFire();
+        pSimulation->centerMessage = "Out of bounds";
+    }
+
+    // physics update logic
+    if (pSimulation->projectile.isMoving) {
+        pSimulation->projectile.Ax = -(1 / (2 * pSimulation->projectile.mass)) * pSimulation->equations.getDragCoefficient(pSimulation->projectile.velocity.back(), pSimulation->projectile.projectilePath.back().getMetersY()) * pSimulation->equations.getAirDensity(pSimulation->projectile.projectilePath.back().getMetersY()) * pSimulation->projectile.surfaceArea * pSimulation->projectile.velocity.back() * pSimulation->projectile.xVelocity.back();
+        pSimulation->projectile.Ay = -(1 / (2 * pSimulation->projectile.mass)) * pSimulation->equations.getDragCoefficient(pSimulation->projectile.velocity.back(), pSimulation->projectile.projectilePath.back().getMetersY()) * pSimulation->equations.getAirDensity(pSimulation->projectile.projectilePath.back().getMetersY()) * pSimulation->projectile.surfaceArea * pSimulation->projectile.velocity.back() * pSimulation->projectile.yVelocity.back() - pSimulation->equations.getGravity(pSimulation->projectile.projectilePath.back().getMetersY());
+        pSimulation->projectile.xVelocity.push_back(pSimulation->projectile.xVelocity.back() + pSimulation->projectile.Ax * pSimulation->projectile.dt);
+        pSimulation->projectile.yVelocity.push_back(pSimulation->projectile.yVelocity.back() + pSimulation->projectile.Ay * pSimulation->projectile.dt);
+        pSimulation->projectile.velocity.push_back(pSimulation->equations.computeTotalComponent(pSimulation->projectile.xVelocity.back(), pSimulation->projectile.yVelocity.back()));
+        pSimulation->projectile.position.setMetersX(pSimulation->projectile.projectilePath.back().getMetersX() + pSimulation->projectile.xVelocity.back() * pSimulation->projectile.dt);
+        pSimulation->projectile.position.setMetersY(pSimulation->projectile.projectilePath.back().getMetersY() + pSimulation->projectile.yVelocity.back() * pSimulation->projectile.dt);
+        pSimulation->projectile.projectilePath.push_back(pSimulation->projectile.position);
+        pSimulation->projectile.hangTime += pSimulation->projectile.dt;
+    }
 
     //
     // draw everything
     //
 
-    ogstream gout(Position(10.0, pDemo->ptUpperRight.getPixelsY() - 20.0));
-
-
+    gout.setPosition(Position(10.0, pSimulation->ptUpperRight.getPixelsY() - 20.0));
+    
     // draw the ground first
-    pDemo->ground.draw(gout);
+    pSimulation->ground.draw(gout);
 
 
     // draw the howitzer
-    gout.drawHowitzer(pDemo->howitzer.point, pDemo->howitzer.angle, pDemo->projectile.hangTime);
+    gout.drawHowitzer(pSimulation->howitzer.point, pSimulation->howitzer.angle, pSimulation->projectile.hangTime);
 
-
-        
-   
+    // draw the projectile
     for (int i = 1; i < 20; i++)
-        gout.drawProjectile(pDemo->projectile.projectilePath[pDemo->projectile.projectilePath.size() - i], 0.5 * (double)i);
-     
-
-
+        gout.drawProjectile(pSimulation->projectile.projectilePath[pSimulation->projectile.projectilePath.size() - i], 0.5 * (double)i);
 
     // draw some text on the screen
     gout.setf(ios::fixed | ios::showpoint);
     gout.precision(1);
     gout << "Time since the bullet was fired: "
-        << pDemo->projectile.hangTime << "s\n";
+        << pSimulation->projectile.hangTime << "s\n";
+
+    
+    
     
 
     
@@ -216,6 +211,8 @@ int WINAPI wWinMain(
 int main(int argc, char** argv)
 #endif // !_WIN32
 {
+    // Hide Console
+    ShowWindow(GetConsoleWindow(), SW_HIDE);
 
     // Initialize OpenGL
     Position ptUpperRight;

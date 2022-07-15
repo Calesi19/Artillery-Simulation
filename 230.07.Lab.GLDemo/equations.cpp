@@ -123,28 +123,6 @@ double Equations::radiansFromDegrees(double degrees) {
 	return degrees * (3.14 / 180);
 }
 
-
-
-
-double Equations::convertSpeedtoHorizontal(double speed, double angle)
-
-{
-	return speed * cos(angle);
-}
-
-
-double Equations::getAngleFromComponents(double speedX, double speedY)
-{
-	return atan(speedX * speedY);
-}
-
-float Equations::getSpeedFromComponents(float speedX, float speedY)
-{
-	float speed = sqrt(speedX * speedX + speedY * speedY);
-	return speed;
-}
-
-
 inline double Equations::linearInterpolation(double d0, double r0, double d1, double r1, double d)
 {
 	if (d1 - d0 != 0.0)
@@ -153,12 +131,9 @@ inline double Equations::linearInterpolation(double d0, double r0, double d1, do
 		return r0;
 }
 
-
 inline double Equations::linearInterpolation(const Mapping& zero, const Mapping& one, double d) {
 	return linearInterpolation(zero.domain, zero.range, one.domain, one.range, d);
 }
-
-
 
 double Equations::linearInterpolation(const Mapping mapping[], int numMapping, double domain) {
 	// Too small to be on the scale
@@ -201,12 +176,7 @@ double Equations::getSpeedOfSound(double altitude) {
 	double speedOfSound = linearInterpolation(soundSpeedMapping, sizeof(soundSpeedMapping) / sizeof(soundSpeedMapping[0]), altitude);
 
 	return speedOfSound;
-
-
 }
-
-
-
 
 
 double Equations::getDragCoefficient(double speed, double altitude) {
@@ -232,17 +202,10 @@ double Equations::getDragCoefficient(double speed, double altitude) {
 		{5.000,	0.2656}
 	};
 
-
 	double dragCoefficient = linearInterpolation(dragMapping, sizeof(dragMapping) / sizeof(dragMapping[0]), machSpeed);
 	
 	return dragCoefficient;
-
-
-
-
 }
-
-
 
 
 double Equations::getAirDensity(double altitude) {
@@ -273,7 +236,6 @@ double Equations::getAirDensity(double altitude) {
 
 	double density = linearInterpolation(densityMapping, sizeof(densityMapping) / sizeof(densityMapping[0]), altitude);
 	return density;
-
 }
 
 
@@ -304,56 +266,4 @@ double Equations::getGravity(double altitude) {
 
 	double gravity = linearInterpolation(gravityMapping, sizeof(gravityMapping) / sizeof(gravityMapping[0]), altitude);
 	return gravity;
-
 }
-
-/*
-int physics() {
-	double distance;
-	double time = 0;
-	double dt = .01;
-
-	double velocity = 827;
-	double angle = 80;
-	double radians = radiansFromDegrees(angle);
-
-	// Remove later (Projectile attributes)
-	double mass = 46.7;
-	double surfaceArea = 2;
-
-
-	vector<double> V;
-	V.push_back(velocity);
-
-	vector<double> x;
-	x.push_back(0);
-	vector<double> y;
-	y.push_back(0);
-
-	vector<double> Vx;
-	Vx.push_back(velocity * cos(radians));
-
-	vector<double> Vy;
-	Vy.push_back(velocity * sin(radians));
-
-
-	double Ax;
-	double Ay;
-
-	while (y.back() >= 0) {
-		Ax = -(1 / (2 * mass)) * getDragCoefficient(V.back(), y.back()) * getAirDensity(y.back()) * surfaceArea * V.back() * Vx.back();
-		Ay = -(1 / (2 * mass)) * getDragCoefficient(V.back(), y.back()) * getAirDensity(y.back()) * surfaceArea * V.back() * Vy.back() - getGravity(y.back());
-		Vx.push_back(Vx.back() + Ax * dt);
-		Vy.push_back(Vy.back() + Ay * dt);
-		V.push_back(computeTotalComponent(Vx.back(), Vy.back()));
-		x.push_back(x.back() + Vx.back() * dt);
-		y.push_back(y.back() + Vy.back() * dt);
-		time += dt;
-	}
-
-	distance = x.back();
-	cout << "Distance:      " << distance << "m       Hang Time : " << time << "s" << endl;
-	return 0;
-}
-
-*/

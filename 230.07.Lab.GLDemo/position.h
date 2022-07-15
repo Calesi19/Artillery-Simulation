@@ -78,7 +78,6 @@ inline double computeDistance(const Position& pos1, const Position& pos2)
 std::ostream & operator << (std::ostream & out, const Position& pt);
 std::istream & operator >> (std::istream & in,        Position& pt);
 
-
 /*********************************************
  * PT
  * Trivial point
@@ -88,5 +87,3 @@ struct PT
    double x;
    double y;
 };
-
-
