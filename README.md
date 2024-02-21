@@ -1,4 +1,4 @@
 # Artillery
 
 
-![Demo of Artillery Program](demo.gif)
+![Demo of Artillery Program](docs/banner.gif)
